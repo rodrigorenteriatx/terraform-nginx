@@ -1,45 +1,21 @@
+# Terraform Setup for Nginx Deployment with Ansible
 
+This repository contains Terraform configurations to provision a VPC with two subnets (public and private), security groups for Nginx servers and a proxy, an internet gateway, and instances with Nginx installed. Additionally, it includes Ansible playbooks to meet prerequisites for Nginx installation and deploy Nginx on the provisioned instances.
 
----
+## Features
 
-# Ansible Managed VPC, EC2, and Nginx-WordPress Stack
+- Automatically configure a VPC with public and private subnets.
+- Create security groups for Nginx servers and a proxy.
+- Provision instances with Nginx installed.
+- Assign SSH keys from the local machine to the instances.
+- Setup an internet gateway for internet access.
+- Populate an inventory file for Ansible playbooks.
+- Enable passwordless SSH and disable host checking for seamless Ansible usage.
 
-This project automates the setup of a Virtual Private Cloud (VPC), EC2 instances, and subnets using Ansible. It also configures a Nginx-WordPress stack within the EC2 instances. All tasks are orchestrated through a bash script for streamlined execution.
+WILL ADD A GETTING STARTED WHEN FINISHED
 
-## Components
+## Notes
 
-1. **VPC and EC2 Setup**: Ansible manages the creation and management of the VPC infrastructure along with EC2 instances within the AWS environment.
-
-2. **Subnet Configuration**: Configuration of subnets within the VPC for proper segmentation and IP address allocation.
-
-3. **Nginx-WordPress Stack**: Ansible playbooks configure Nginx as a reverse proxy server and set up the WordPress application within the EC2 instances.
-
-4. **Bash Script Orchestration**: A bash script orchestrates the execution of Ansible playbooks for VPC, EC2, and Nginx-WordPress setup.
-
-## Usage
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/your-repository.git
-   ```
-
-2. Ensure AWS credentials are properly configured for Ansible.
-
-3. Modify the Ansible variables and configurations in the project according to your requirements.
-
-4. Run the bash script:
-
-   ```bash
-   bash setup.sh
-   ```
-
-5. Monitor the execution for any errors or issues, and troubleshoot as necessary.
-
-6. Access the Nginx-WordPress stack deployed on the EC2 instances via the provided URLs.
-
-## Note
-
-- Review the documentation and ensure compliance with AWS best practices and security measures before deploying the infrastructure.
-
----
+- Ensure that you have the necessary AWS credentials configured locally.
+- Review the Terraform configurations and Ansible playbooks before deploying to ensure they meet your requirements.
+- After deployment, test the Nginx installation by accessing the public IP addresses of the instances in a web browser.
