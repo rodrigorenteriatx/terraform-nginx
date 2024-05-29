@@ -1,12 +1,9 @@
-output "ip_addr" {
-  value = [ for instance in aws_aws_instance.server : instance.public_ip ]
-}
 resource "local_file" "inventory" {
   content = <<-EOF
   [servers]
-  ${join("\n", slice(ip_addr, 0, 2))}
+  ${join("\n", slice(aws_instance.server.*.public_ip, 0, 2))}
   [load_balancer]
-  ${ip_addr[2]}
+  ${element(aws_instance.server.*.public_ip, 2)}
   EOF
-  filename = "../ansible_workspace/inventory/hosts"
+  filename = "../ansible_workspace/hosts.ini"
 }

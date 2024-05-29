@@ -1,6 +1,6 @@
 variable "public_key" {
     type = string
-    default = "../keys/id_rsa.pub"
+    default = "~/.ssh/my_keys/id_rsa.pub"
 }
 
 variable "ami" {

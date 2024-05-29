@@ -21,47 +21,6 @@ resource "aws_subnet" "PrivSubnet"{
 
 }
 
-# Creates the EC2 Security Group with Inbound and Outbound rules.
-resource "aws_security_group" "sg" {
-  name = "sg"
-  vpc_id = aws_vpc.myvpc.id
-
-    # This will allow us to access the HTTP server on Port 80, where our WP will be accessible.
-  ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-    # This will allow us to SSH into the instance for Ansible to do it's magic.
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_security_group" "lb-sg" {
-  name = "lb-sg"
-  vpc_id = aws_vpc.myvpc.id
-
-    # This will allow us to access the HTTP server on Port 80, where our WP will be accessible.
-  ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 
 
