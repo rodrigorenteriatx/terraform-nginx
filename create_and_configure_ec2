@@ -4,23 +4,22 @@
 
 #here we may also create an ssh key, but we have to be able to create and retrieve from terraform.
 #lets create the local public key
-
-
-
-mkdir -p ./keys
-
-if [ ! -f ./keys/id_rsa.pub ] 
-then
-    ssh-keygen -t rsa -b 4096 -f ./keys/id_rsa -N ""
-fi
-
 cd terraform_workspace
+
+terraform destroy -auto-approve
+mkdir -p ~/.ssh/my_keys/
+
+if [ ! -f ~/.ssh/my_keys/id_rsa.pub ]
+then
+    ssh-keygen -t rsa -b 4096 -f ~/.ssh/my_keys/id_rsa -N ""
+fi
 
 terraform init -input=true
 terraform validate
+terraform apply -auto-approve
 
 
 
 
 
-#afterwards, possibly from terraform we need to be able to run the plabook here to all of the 
+#afterwards, possibly from terraform we need to be able to run the plabook here to all of the
