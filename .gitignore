@@ -34,3 +34,5 @@ override.tf.json
 terraform.rc
 
 keys/
+
+ansible_workspace/inventory
