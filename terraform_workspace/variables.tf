@@ -5,9 +5,9 @@ variable "public_key" {
 
 variable "ami" {
     type = string
-    default = "ami-0bb84b8ffd87024d8"
+    default = "ami-00beae93a2d981137"
 }
 
 variable "ec2-count" {
-    default = 2
+    default = 3
 }

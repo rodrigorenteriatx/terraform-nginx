@@ -15,6 +15,8 @@ resource "aws_instance" "server" {
   key_name = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
   subnet_id = aws_subnet.PublicSubnet.id
+  vpc_security_group_ids = count.index == 2 ? [aws_security_group.sg.id, aws_security_group.lb_sg.id] : [aws_security_group.sg.id]
+
 
   tags = {
     Name = "server-${count.index}"
