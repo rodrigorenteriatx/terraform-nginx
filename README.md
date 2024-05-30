@@ -12,6 +12,10 @@ This repository contains Terraform configurations to provision a VPC with two su
 - Populate an inventory file for Ansible playbooks.
 - Enable passwordless SSH and disable host checking for seamless Ansible usage.
 
+- Configures Nginx as a web server and implements SSH security with Ansible.
+- Generates SSL certificates and associates them with the Nginx servers using Certbot.
+- Associates DNS records from a Route 53 domain to the provisioned instances using AWS Lambda and API Gateway.
+
 WILL ADD A GETTING STARTED WHEN FINISHED
 
 ## Notes
