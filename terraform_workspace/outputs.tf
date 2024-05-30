@@ -1,9 +1,14 @@
 resource "local_file" "inventory" {
+  # content = <<-EOF
+  # [servers]
+  # ${join("\n", slice(aws_instance.server.*.public_ip, 0, 2))}
+  # [load_balancer]
+  # ${element(aws_instance.server.*.public_ip, 2)}
+  # EOF
+
   content = <<-EOF
   [servers]
-  ${join("\n", slice(aws_instance.server.*.public_ip, 0, 2))}
-  [load_balancer]
-  ${element(aws_instance.server.*.public_ip, 2)}
+  aws_instance.server.public_ip
   EOF
   filename = "../ansible_workspace/hosts.ini"
 }
@@ -11,8 +16,8 @@ resource "local_file" "inventory" {
 resource "local_file" "output" {
   content = jsonencode({
     domain_name = "rodrigonginx.com"
-    zoneid     = data.aws_route53_zone.selected.zone_id
-    ip = aws_instance.server.public_ip.server-1.public_ip
+    zoneid     = data.aws_route53_zone.domain.zone_id
+    ip = aws_instance.server.public_ip
   })
-  filename = "domain_values.json"
+  filename = "../domain_values.json"
 }

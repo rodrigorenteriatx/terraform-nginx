@@ -9,5 +9,5 @@ variable "ami" {
 }
 
 variable "ec2-count" {
-    default = 3
+    default = 1
 }

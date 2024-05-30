@@ -2,6 +2,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_route53_zone" "domain" {
+  name = "rodrigonginx.com."
+}
+
 resource "aws_key_pair" "ssh_key" {
     key_name = "ec2-key"
     public_key = file(var.public_key)
@@ -53,15 +57,18 @@ resource "aws_security_group" "lb-sg" {
 resource "aws_instance" "server" {
   ami = var.ami
   instance_type = "t2.micro"
-  count = var.ec2-count
+  # count = var.ec2-count
   key_name = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
   subnet_id = aws_subnet.PublicSubnet.id
-  vpc_security_group_ids = count.index == 2 ? [aws_security_group.sg.id, aws_security_group.lb-sg.id] : [aws_security_group.sg.id]
+  vpc_security_group_ids = [aws_security_group.sg.id, aws_security_group.lb-sg.id]
+
+  # vpc_security_group_ids = count.index == 2 ? [aws_security_group.sg.id, aws_security_group.lb-sg.id] : [aws_security_group.sg.id]
 
 
   tags = {
-    Name = "server-${count.index}"
+    # Name = "server-${count.index}"
+    Name = "server-1"
   }
 
   depends_on = [ aws_security_group.lb-sg, aws_security_group.sg ]
