@@ -1,0 +1,11 @@
+---
+# tasks file for pre-reqs
+- name: Update and Upgrade
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install Yum-utils
+  yum:
+    name: yum-utils
+    state: present

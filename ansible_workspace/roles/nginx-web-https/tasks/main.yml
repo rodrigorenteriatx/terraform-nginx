@@ -1,0 +1,5 @@
+---
+# tasks file for nginx-web-https
+- name : Create backup of nginx.conf
+  command: cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+  
