@@ -18,6 +18,7 @@ resource "local_file" "output" {
     domain_name = "rodrigonginx.com"
     zoneid     = data.aws_route53_zone.domain.zone_id
     ip = aws_instance.server.public_ip
+    # api_id = data.aws_api_gateway_rest_api.updateRecordsAPI.id
   })
   filename = "../domain_values.json"
 }

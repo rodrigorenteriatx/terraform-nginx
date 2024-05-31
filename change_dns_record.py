@@ -1,18 +1,25 @@
 import requests
 import json
+import boto3
+from retrive_post_route import api_full_post_route
 
-with open('./domain_values.json') as f:
-    data = json.load(f)
+def post_data():
+    file = "./domain_values.json"
 
-values = {}
+    endpoint = api_full_post_route()
 
-values["domain"] = data['domain_name']
-values["zoneid"] = data['zoneid']
-values["ip"]= data['ip']
-api_endpoint = "https://pwu8ro7ay3.execute-api.us-east-1.amazonaws.com/updateDNS"
+    with open(file) as f:
+        data = json.load(f)
+
+    values = {}
+
+    values["domain"] = data['domain_name']
+    values["zoneid"] = data['zoneid']
+    values["ip"]= data['ip']
+    response = requests.post(endpoint, json=values)
+
+    print(response.text)
 
 
-
-response = requests.post(api_endpoint, json=values)
-
-print(response.text)
+if __name__ == "__main__":
+    post_data()
