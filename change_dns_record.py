@@ -3,6 +3,7 @@ import json
 import boto3
 from retrive_post_route import api_full_post_route
 
+
 def post_data():
     file = "./domain_values.json"
 

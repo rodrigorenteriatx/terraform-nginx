@@ -9,14 +9,22 @@ cd terraform_workspace
 terraform destroy -auto-approve
 mkdir -p ~/.ssh/my_keys/
 
-if [ ! -f ~/.ssh/my_keys/id_rsa.pub ]
+if [ ! -f ~/.ssh/my_keys/id_ed25519.pub ]
 then
-    ssh-keygen -t rsa -b 4096 -f ~/.ssh/my_keys/id_rsa -N ""
+    ssh-keygen -t ed25519 -f ~/.ssh/my_keys/id_ed25519 -N ""
 fi
 
 terraform init -input=true
 terraform validate
+if [ $? -ne 0 ]; then
+    echo "Terraform validation failed"
+    exit 1
+fi
 terraform apply -auto-approve
+if [ $? -ne 0 ]; then
+    echo "Terraform apply failed"
+    exit 1
+fi
 
 cd ../
 python3 change_dns_record.py

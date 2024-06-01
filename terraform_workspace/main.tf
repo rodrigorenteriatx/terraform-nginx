@@ -5,6 +5,7 @@ provider "aws" {
 data "aws_route53_zone" "domain" {
   name = "rodrigonginx.com."
 }
+
 # data "aws_api_gateway_rest_api" "updateRecordsAPI" {
 #   name = "updateRecordsAPI"
 # }
