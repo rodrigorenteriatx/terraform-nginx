@@ -1,2 +1,7 @@
 ---
 # tasks file for ssh-hardening
+- name: SSH Hardening
+  include_tasks: "{{ item }}"
+  loop:
+    - sshd_config.yml
+    - ssh-group.yml

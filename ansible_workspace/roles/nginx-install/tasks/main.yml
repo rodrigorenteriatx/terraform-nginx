@@ -1,10 +1,14 @@
 ---
 # tasks file for nginx
+- name: Upgrate and Update all packages
+  yum:
+    name: '*'
+    state: latest
 
 
 - name: Install epel-release
   yum:
-    name: epel-release
+    name: yum-utils
     state: present
 
 - name: Install nginx

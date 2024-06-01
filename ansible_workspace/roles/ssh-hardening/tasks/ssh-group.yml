@@ -1,0 +1,21 @@
+- name: Create SSH Group
+  group:
+    name: sshusers
+    state: present
+    gid: 1001
+
+- name: Create a new non-root user
+  user:
+    name: admin2
+    shell: /bin/bash
+    groups:
+      - sshusers
+      - sudo
+    append: yes
+    createhome: yes
+
+- name: Add existing ec2-user to SSH Group
+  user:
+    name: ec2-user
+    groups: sshusers
+    append: yes
