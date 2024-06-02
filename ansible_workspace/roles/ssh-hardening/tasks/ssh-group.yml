@@ -10,9 +10,35 @@
     shell: /bin/bash
     groups:
       - sshusers
-      - sudo
     append: yes
     createhome: yes
+
+- name: Disable password on admin2 using shell module
+  shell: "passwd -d admin2"
+
+- name: Create .ssh directory for admin2
+  file:
+    path: "/home/admin2/.ssh"
+    state: directory
+    owner: admin2
+    mode: 0700
+
+- name: Copy keys from ec2-user to admin2 user
+  command: cp /home/ec2-user/.ssh/authorized_keys /home/admin2/.ssh/authorized_keys
+  args:
+    creates: /home/admin2/.ssh/authorized_keys
+
+- name: change ownership of copied keys
+  command: chown -R admin2:admin2 /home/admin2/.ssh/
+
+- name: Echo the permissions on the authorized_keys file
+  shell: ls -l /home/admin2/.ssh/authorized_keys
+  register: ls_output
+
+- name: print the output of the ls command
+  debug:
+    var: ls_output.stdout
+
 
 - name: Add existing ec2-user to SSH Group
   user:

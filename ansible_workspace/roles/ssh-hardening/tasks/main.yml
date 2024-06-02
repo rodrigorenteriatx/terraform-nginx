@@ -3,5 +3,5 @@
 - name: SSH Hardening
   include_tasks: "{{ item }}"
   loop:
-    - sshd_config.yml
     - ssh-group.yml
+    - sshd_config.yml

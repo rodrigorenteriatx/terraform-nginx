@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd ansible_workspace
+
+ansible-playbook install_v1.yml

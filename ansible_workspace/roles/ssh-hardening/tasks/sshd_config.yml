@@ -28,7 +28,8 @@
       LogLevel VERBOSE
 
       # Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
-      Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
+      # Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
+      # Subsytem ALREADY EXISTS BY DEFAULT , we will leave that value for now
 
       # Root login is not allowed for auditing reasons. This is because it's difficult to track which process belongs to which root user:
       #
@@ -38,15 +39,34 @@
       # Using regular users in combination with /bin/su or /usr/bin/sudo ensure a clear audit track.
       PermitRootLogin No
 
-- name: Restart sshd service
-  service:
-    name: sshd
-    state: restarted
+- name: CHeck if there are Duplicate entries with awk
+  shell: |
+    sudo awk 'NF && $1!~/^(#|HostKey)/{print $1}' /etc/ssh/sshd_config | sort | uniq -c | grep -v ' 1 '
+  register: duplicate_entries
+  ignore_errors: true
+
+- name: Fail if there are duplicate entries
+  fail:
+    msg: "Duplicate entries found in /etc/ssh/sshd_config: {{ duplicate_entries.stdout }}"
+  when: duplicate_entries.rc == 0
+
 
 - name: Copy sshd_config to local machine
   fetch:
     src: /etc/ssh/sshd_config
     dest: /tmp/sshd_config.bak
     flat: yes
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+
+- name: Wait for ssh service to become available
+  wait_for:
+    port: 22
+    delay: 10
+    timeout: 180
+
 # This is a task in an Ansible playbook that uses the `fetch` module
 # flat: yes`: This option, when set to `yes`, will cause the file to be stored on the local machine at the location specified in `dest`. If `flat` is `no` (the default), the file will be stored in a directory structure that mirrors the path of the file on the remote machine.
