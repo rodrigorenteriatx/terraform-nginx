@@ -2,4 +2,29 @@
 # tasks file for nginx-web-https
 - name : Create backup of nginx.conf
   command: cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-  
+
+- name: Overwrite nginx.conf with hardened configuration
+  copy:
+    src: ../nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Create /sites directory
+  file:
+    path: /sites
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: '0755'
+
+- name: Copy demo directory to remote server
+  ansible.builtin.copy:
+    src: ../demo
+    dest: /sites/
+    owner: nginx
+    group: nginx
+    mode: '0755'
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
