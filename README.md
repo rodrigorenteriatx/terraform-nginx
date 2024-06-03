@@ -30,5 +30,3 @@ This repository contains Terraform configurations to provision a VPC with two su
 - After deployment, test the Nginx installation by accessing the public IP addresses of the instances in a web browser.
 
 ---
-
-Feel free to customize the "Getting Started" section once you've completed it. This README provides a comprehensive overview of the project's features and functionality.
