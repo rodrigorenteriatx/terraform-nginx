@@ -38,3 +38,4 @@ keys/
 inventory
 
 domain_values.json
+sshd_config
