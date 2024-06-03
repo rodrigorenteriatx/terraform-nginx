@@ -23,10 +23,6 @@ This repository contains Terraform configurations to provision a VPC with two su
 - Automates the creation of new certificates, enabling secure access to rodrigonginx.com with HTTPS enabled.
 - All of this is automated with Python, Bash, AWS, Terraform, and Ansible.
 
-## Getting Started
-
-WILL ADD A GETTING STARTED WHEN FINISHED
-
 ## Notes
 
 - Ensure that you have the necessary AWS credentials configured locally.
