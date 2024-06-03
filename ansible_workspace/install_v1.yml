@@ -1,7 +1,33 @@
 - hosts: servers
   become: yes
-  gather_facts: no
+  gather_facts: yes
+
+  vars:
+    certbot_admin_email: rodrigorenteriatx@gmail.com
+    certbot_create_if_missing: true
+    certbot_create_standalone_stop_services:
+      - nginx
+    certbot_certs:
+      - domains:
+          - rodrigonginx.com
+    certbot_install_method: package
   roles:
     - nginx-install
     - ssh-hardening
     - nginx-web-https
+    - snapd-certbot
+    # - geerlingguy.certbot
+
+
+  tasks:
+    - name: reach www.rodrigonginx.com from localhost
+      ansible.builtin.uri:
+        url: https://www.rodrigonginx.com
+        status_code: 200
+        timeout: 5
+        validate_certs: yes
+      register: result
+      ignore_errors: yes
+
+  #https://github.com/geerlingguy/ansible-role-certbot
+  #https://github.com/geerlingguy/ansible-role-certbot/blob/master/molecule/default/playbook-standalone-nginx-aws.yml

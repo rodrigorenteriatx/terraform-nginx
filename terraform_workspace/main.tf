@@ -50,8 +50,8 @@ resource "aws_security_group" "lb-sg" {
 
     # This will allow us to access the HTTP server on Port 80, where our WP will be accessible.
   ingress {
-    from_port = 8080
-    to_port = 8080
+    from_port = 443
+    to_port = 443
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

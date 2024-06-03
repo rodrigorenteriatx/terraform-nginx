@@ -1,0 +1,88 @@
+---
+# tasks file for snapd-certbot
+
+# - name: Install snapd
+#   ansible.builtin.dnf:
+#     name: snapd
+#     state: present
+
+# - name: Enable snapd
+#   shell: sudo ln -s /var/lib/snapd/snap /snap
+
+# - name: restart system services
+#   ansible.builtin.systemd:
+#     name: snapd
+#     state: restarted
+
+- name: install python/pip
+  shell: sudo dnf install python3 augeas-libs -y
+
+- name: setup python virtual env
+  shell: |
+    sudo python3 -m venv /opt/certbot/
+    sudo /opt/certbot/bin/pip install --upgrade pip
+
+- name: install certbot
+  shell: sudo /opt/certbot/bin/pip install certbot certbot-nginx
+
+- name: Prepare cert bot command
+  shell: sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
+  ignore_errors: true
+
+- name: hash -r (reload path)
+  shell: hash -r
+
+# - name: register Certbot
+#   shell: certbot register --agree-tos --email rodrigorenteriatx@gmail.com
+
+# - name: Generate a cert for a domain whose DNS points to this server
+#   shell: certbot certonly --noninteractive --standalone -d rodrigonginx.com -d www.rodrigonginx.com
+
+# - name: Add block of text (https) to nginx.conf
+#   blockinfile:
+#     path: /etc/nginx/nginx.conf
+#     block: |
+#       server {
+#           listen 443 ssl;
+#           server_name rodrigonginx.com www.rodrigonginx.com;
+#           ssl_certificate /etc/letsencrypt/live/rodrigonginx.com/fullchain.pem;
+#           ssl_certificate_key /etc/letsencrypt/live/rodrigonginx.com/privkey.pem;
+#           # include /etc/letsencrypt/options-ssl-nginx.conf;
+#           # ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+#       }
+
+- name: get certs created
+  shell: sudo certbot --nginx --non-interactive --agree-tos --email tubayeezus@gmail.com -d rodrigonginx.com -d www.rodrigonginx.com
+
+
+- name: add crontab for certbot renewal
+  shell: echo "0 0,12 * * * root /opt/certbot/bin/python -c 'import random; import time; time.sleep(random.random() * 3600)' && sudo certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+
+- name: Check nginx configuration
+  shell: nginx -t
+  register: result
+
+- name: debug nginx configuration
+  debug:
+    var: result
+
+- name: reloaded nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: reloaded
+
+# - name:  Test certbot renewal
+#   shell: certbot renew --dry-run
+#   register: result
+
+# - name:  debug certbot renewal
+#   debug:
+#     var: result
+
+- name: get certbot certs
+  shell: certbot certificates
+  register: result
+
+- name: debug certbot certs
+  debug:
+    var: result
