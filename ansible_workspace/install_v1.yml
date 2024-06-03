@@ -15,7 +15,7 @@
     - nginx-install
     - ssh-hardening
     - nginx-web-https
-    - snapd-certbot
+    - certbot-config-install
     # - geerlingguy.certbot
 
 
